@@ -1,10 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+        {% load static %}
     <meta charset="UTF-8">
     <title>Title</title>
+        <script src="{% static 'js/main.js' %}"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+
 </head>
 <body>
+<div class="b-popup" id="popup1">
+    <div class="b-popup-content">
+        Text in Popup
+    <a href="javascript:PopUpHide()">Hide popup</a>
+    </div>
+</div>
+<div id="SerChecker">
+{% for ser in servers %}
+    <div class="PerSer">
+    <label>Название сервера</label>
+    <div>{{ ser.server }}</div>
+        <label>Символ</label>
+
+    <div>{{ ser.symbol }}</div>
+    <label>Внешняя функция</label>
+    <div>{{ ser.out_function }}</div>
+    </div>
+{% endfor %}
+
+<button id="newServer">Добавить новый сервер данных</button>
+</div>
 <marquee scrollamount="6"  style="color: #D9470D; font-size: 40px; font-weight: bolder; line-height: 150%; text-shadow: #000000 0px 1px 1px;">
 
 </marquee>

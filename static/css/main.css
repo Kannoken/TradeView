@@ -1,0 +1,13 @@
+#SerChecker{
+    width: 300px;
+    border: 1px solid black;
+}
+.PerSer{
+    border: 1px solid black;
+}
+#newServer{
+
+}
+#popup1{
+    display: none;
+}
