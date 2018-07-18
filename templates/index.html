@@ -13,11 +13,24 @@
 
 </head>
 <body>
-<div class="b-popup" id="popup1">
-    <div class="b-popup-content">
-        Text in Popup
-    <a href="javascript:PopUpHide()">Hide popup</a>
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        {{ form }}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
     </div>
+  </div>
 </div>
 <div id="SerChecker">
 {% for ser in servers %}
@@ -32,7 +45,10 @@
     </div>
 {% endfor %}
 
-<button id="newServer">Добавить новый сервер данных</button>
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+  Launch demo modal
+</button>
+
 </div>
 <marquee scrollamount="6"  style="color: #D9470D; font-size: 40px; font-weight: bolder; line-height: 150%; text-shadow: #000000 0px 1px 1px;">
 

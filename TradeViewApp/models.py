@@ -1,6 +1,7 @@
 from django.db import models
 import requests
-
+import json
+from django.db import IntegrityError
 
 class Server(models.Model):
     def __str__(self):
@@ -12,16 +13,29 @@ class Server(models.Model):
     interval_in_hour = models.IntegerField(verbose_name="Интервал запроса")
     out_function = models.CharField(default='TIME_SERIES_DAILY', max_length=255)
 
-    def get_data(self):
+    def refreash_data(self):
         req  = self.server+'query?function='+self.out_function+'&symbol='+self.symbol+'&apikey='+self.key
         header = {"Content-type": "Application/json"}
         r = requests.get(req, headers=header)
-        return r.text
+        data = json.loads(r.text)
+        meta = data['Meta Data']
+        del data['Meta Data']
+        last_refreash = ''
+        for key in meta:
+            if 'refreshed' in key.lower():
+                last_refreash = meta[key]
+
+        StoreInfo.objects.create(date=last_refreash, server=self, data=data)
+
 
 class StoreInfo(models.Model):
-    def __str__(self):
-        return self.date
 
-    date = models.DateField(verbose_name='Дата обновления на сервере')
+    def __str__(self):
+        return str(self.date)
+
+    date = models.DateField(verbose_name='Дата обновления на сервере', editable=False)
     server = models.ForeignKey(Server, on_delete=models.CASCADE, verbose_name='Настройки запроса к серверу')
     data = models.TextField(default='', verbose_name='Информация из сервера')
+
+    class Meta:
+        unique_together = ('date', 'server')

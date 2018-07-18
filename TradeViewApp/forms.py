@@ -6,4 +6,4 @@ from TradeViewApp.models import Server, StoreInfo
 class ServerForm(ModelForm):
     class Meta:
         model = Server
-        fields = ['key', 'symbol', 'out_function']
+        fields = ['key', 'symbol', 'out_function', 'interval_in_hour']
