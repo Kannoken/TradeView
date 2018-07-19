@@ -13,6 +13,11 @@
 
 </head>
 <body>
+<marquee scrollamount="6"  style="color: #D9470D; font-size: 40px; font-weight: bolder; line-height: 150%; text-shadow: #000000 0px 1px 1px;">
+{% for x, value in result %}
+    date: {{ x }} abs: {{ value.abs }} close: {{ value.close }} {{ value.per }}%
+{% endfor %}
+</marquee>
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -34,6 +39,7 @@
 </div>
 <div id="SerChecker">
 {% for ser in servers %}
+
     <div class="PerSer">
     <label>Название сервера</label>
     <div>{{ ser.server }}</div>
@@ -50,8 +56,6 @@
 </button>
 
 </div>
-<marquee scrollamount="6"  style="color: #D9470D; font-size: 40px; font-weight: bolder; line-height: 150%; text-shadow: #000000 0px 1px 1px;">
 
-</marquee>
 </body>
 </html>
