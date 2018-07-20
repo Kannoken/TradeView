@@ -4,20 +4,18 @@
         {% load static %}
     <meta charset="UTF-8">
     <title>Title</title>
-        <script src="{% static 'js/main.js' %}"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+           <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+        <script src="{% static 'js/main.js' %}"></script>
+
     <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
 
 </head>
-<body>
-<marquee scrollamount="6"  style="color: #D9470D; font-size: 40px; font-weight: bolder; line-height: 150%; text-shadow: #000000 0px 1px 1px;">
-{% for x, value in result %}
-    date: {{ x }} abs: {{ value.abs }} close: {{ value.close }} {{ value.per }}%
-{% endfor %}
-</marquee>
+
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -38,8 +36,10 @@
   </div>
 </div>
 <div id="SerChecker">
+<ul>
 {% for ser in servers %}
-
+<li id="{{ ser.id }}">
+{% csrf_token %}
     <div class="PerSer">
     <label>Название сервера</label>
     <div>{{ ser.server }}</div>
@@ -49,13 +49,20 @@
     <label>Внешняя функция</label>
     <div>{{ ser.out_function }}</div>
     </div>
-{% endfor %}
+    </li>
 
+{% endfor %}
+</ul>
+</div>
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
   Launch demo modal
 </button>
-
-</div>
-
+<body>
+<marquee  id="marq" scrollamount="6"  style="color: #D9470D; font-size: 40px; font-weight: bolder; line-height: 150%; text-shadow: #000000 0px 1px 1px;">
+{% for x, value in result %}
+    date: {{ x }} abs: {{ value.abs }} close: {{ value.close }} {{ value.per }}%
+{% endfor %}
+</marquee>
+<h4>{{ symbol.name }}</h4>
 </body>
 </html>

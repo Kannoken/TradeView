@@ -2,6 +2,8 @@ from django.db import models
 import requests
 import json
 from django.db import IntegrityError
+from datetime import datetime
+
 
 class Server(models.Model):
     def __str__(self):
@@ -10,7 +12,7 @@ class Server(models.Model):
     server = models.CharField(default='https://www.alphavantage.co/', max_length=255, verbose_name='Название сервера')
     key = models.CharField(default='O8TY56AICAWDOPWM', max_length=255)
     symbol = models.CharField(max_length=255, default='MSFT', verbose_name='символ акций компании')
-    interval_in_hour = models.IntegerField(verbose_name="Интервал запроса")
+    interval_in_hour = models.IntegerField(verbose_name="Интервал запроса", default=1)
     out_function = models.CharField(default='TIME_SERIES_DAILY', max_length=255)
 
     def refreash_data(self):
@@ -23,6 +25,7 @@ class Server(models.Model):
         last_refreash = ''
         for key in meta:
             if 'refreshed' in key.lower():
+
                 last_refreash = meta[key]
 
         StoreInfo.objects.create(date=last_refreash, server=self, data=data)
@@ -38,4 +41,5 @@ class StoreInfo(models.Model):
     data = models.TextField(default='', verbose_name='Информация из сервера')
 
     class Meta:
+        ordering = ['-date']
         unique_together = ('date', 'server')

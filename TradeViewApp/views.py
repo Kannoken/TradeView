@@ -1,24 +1,43 @@
-from django.shortcuts import render
+from django.shortcuts import render, HttpResponse
 from TradeViewApp.models import Server, StoreInfo
 from TradeViewApp.forms import ServerForm
 import json
-import math
-import collections
+from django.views.decorators.csrf import csrf_exempt
 
+@csrf_exempt
 def main(request):
     form = ServerForm()
     server = Server.objects.all()
-    # if request.method == 'GET':
-    #     pass
-    string_data = StoreInfo.objects.first()
-    result = create_data(string_data)
-    return render(request, 'index.html', {'form':form, 'servers': server, 'result':reversed(sorted(result.items()))})
+    if not Server.objects.all():
+        ser = Server.objects.create()
+        ser.save()
+    result = {}
+    symbol = {}
+    if request.method == 'POST' and request.POST.get('id'):
+        data = StoreInfo.objects.filter(server=request.POST['id']).first()
+        if not data:
+            serv = Server.objects.get(id=request.POST['id'])
+            serv.refreash_data()
+            symbol['name'] = server.symbol
+
+        f = StoreInfo.objects.filter(server=request.POST['id']).last()
+        result = create_data(f)
+        return HttpResponse(json.dumps({'result': result, 'symbol': symbol}), content_type="application/json")
+
+    else:
+        string_data = StoreInfo.objects.first()
+        if not string_data:
+            serv = Server.objects.last()
+            serv.refreash_data()
+            symbol['name'] = serv.symbol
+            string_data = StoreInfo.objects.last()
+        result = create_data(string_data)
+    return render(request, 'index.html', {'form':form, 'servers': server, 'result':reversed(sorted(result.items())), 'symbol': symbol})
 
 def create_data(data):
     result = {}
     tmp = {}
     data = data.data.replace("\'", "\"")
-    print(data)
     dic = json.loads(data)
     for key, value in dic.items():
         for k, val in value.items():
