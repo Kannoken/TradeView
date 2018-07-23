@@ -3,6 +3,13 @@ from TradeViewApp.models import Server, StoreInfo
 from TradeViewApp.forms import ServerForm
 import json
 from django.views.decorators.csrf import csrf_exempt
+from TradeViewApp.serializers import ServerSerializer
+from rest_framework.decorators import api_view
+from rest_framework.reverse import reverse
+from rest_framework.response import Response
+from rest_framework import generics
+
+
 
 @csrf_exempt
 def main(request):
@@ -52,3 +59,14 @@ def create_data(data):
             percent = round((tmp[k]['open']-result[k]['close'])/result[k]['close']*100, 2)
             result[k].update({'abs': abs, 'per': percent})
     return result
+
+
+@api_view(['GET'])
+def api_root(request, format=None):
+
+    return Response({
+        'users': reverse('server-list', request=request),
+    })
+class ServerList(generics.ListCreateAPIView):
+    model = Server
+    serializer_class = ServerSerializer

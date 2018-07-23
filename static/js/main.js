@@ -5,7 +5,7 @@ $(document).ready(function () {
     $('li').click(function () {
         $.post('/', {id : this.id}).done(function (result) {
             let $marq =$('#marq').detach();
-            let str = ''
+            let str = '';
             for (let key in result.result){
                 str+=' date: '+key+' abs: '+result.result[key].abs + ' close: '+result.result[key].close + ' '+ result.result[key].per
             }
