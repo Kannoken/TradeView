@@ -4,10 +4,11 @@ from TradeViewApp.forms import ServerForm
 import json
 from django.views.decorators.csrf import csrf_exempt
 from TradeViewApp.serializers import ServerSerializer
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.reverse import reverse
 from rest_framework.response import Response
-from rest_framework import generics
+from rest_framework.views import APIView
+from rest_framework import permissions
 
 
 
@@ -60,16 +61,31 @@ def create_data(data):
             result[k].update({'abs': abs, 'per': percent})
     return result
 
+@api_view(['GET', 'POST'])
+@permission_classes((permissions.AllowAny,))
+def servers_list(request):
+    if request.method == 'GET':
+        snippets = Server.objects.all()
+        serializer = ServerSerializer(snippets, many=True)
+        print(serializer.data)
+        return Response(serializer.data)
 
-@api_view(['GET'])
-def api_root(request, format=None):
+@api_view(['GET', 'POST'])
+@permission_classes((permissions.AllowAny,))
+def server_detail(request, pk):
+    snippet = Server.objects.get(pk=pk)
+    print(snippet)
+    if request.method == 'GET':
+        serializer = ServerSerializer(snippet)
+        return Response(serializer.data)
 
-    return Response({
-        'servers': reverse('server-list', request=request),
-    })
-class ServerList(generics.ListCreateAPIView):
-    model = Server
-    serializer_class = ServerSerializer
 
-    def get_queryset(self):
-        return Server.objects.all()
+@api_view(['GET', 'POST'])
+@permission_classes((permissions.AllowAny,))
+def server_symbols(request):
+    servers = Server.objects.all()
+    serializer = ServerSerializer(servers, many=True)
+    print(serializer.data)
+    return Response(serializer.data)
+
+

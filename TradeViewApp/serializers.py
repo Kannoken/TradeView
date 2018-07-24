@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from TradeViewApp.models import Server
 
-class ServerSerializer(serializers.HyperlinkedModelSerializer):
+class ServerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Server
-        fields = ('server', 'symbol', 'out_function')
+        fields = ('id', 'server', 'symbol', 'out_function')

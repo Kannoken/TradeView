@@ -16,14 +16,18 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls import  url, include
-from TradeViewApp.views import main, ServerList
+from TradeViewApp.views import main, servers_list, server_detail, server_symbols
 from rest_framework.urlpatterns import format_suffix_patterns
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     # path(r'', main),
-    url(r'^servers/$', ServerList.as_view(), name='server-list'),
+    url(r'^servers/$',servers_list, name='server-list'),
+    url(r'^servers/(?P<pk>[0-9]+)/$', server_detail),
+    url(r'^symbols/', server_symbols),
+    # url(r'^servers$', get_by_id, name='server-list'),
+    # # url(r'^servers/$', ServerList.as_view(), name='server-list'),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 
 ]
