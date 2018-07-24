@@ -65,8 +65,11 @@ def create_data(data):
 def api_root(request, format=None):
 
     return Response({
-        'users': reverse('server-list', request=request),
+        'servers': reverse('server-list', request=request),
     })
 class ServerList(generics.ListCreateAPIView):
     model = Server
     serializer_class = ServerSerializer
+
+    def get_queryset(self):
+        return Server.objects.all()

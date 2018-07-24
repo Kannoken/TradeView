@@ -4,4 +4,4 @@ from TradeViewApp.models import Server
 class ServerSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Server
-        fields = ('server', 'symbo;', 'out_function')
+        fields = ('server', 'symbol', 'out_function')

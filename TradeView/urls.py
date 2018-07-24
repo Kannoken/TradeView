@@ -15,10 +15,16 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from TradeViewApp.views import main
+from django.conf.urls import  url, include
+from TradeViewApp.views import main, ServerList
+from rest_framework.urlpatterns import format_suffix_patterns
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path(r'', main),
-    path(r'api-auth/', include('rest_framework.urls', namespace='rest_framework'))
+    # path(r'', main),
+    url(r'^servers/$', ServerList.as_view(), name='server-list'),
+    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+
 ]
+urlpatterns = format_suffix_patterns(urlpatterns, allowed=['json', 'api'])
