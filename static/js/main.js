@@ -1,7 +1,8 @@
 $(document).ready(function () {
-    $('#myModal').on('shown.bs.modal', function () {
-        $('#myInput').trigger('focus')
-    });
+var $li = $('li').click(function() {
+    $li.removeClass('selected');
+    $(this).addClass('selected');
+});
     $('li').click(function () {
         $.post('/', {id : this.id}).done(function (result) {
             let $marq =$('#marq').detach();

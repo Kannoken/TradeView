@@ -32,3 +32,6 @@ li{
     top:0;
     left: 0;
 }
+li.selected {
+    background-color: green;
+}
